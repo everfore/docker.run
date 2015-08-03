@@ -1,9 +1,12 @@
-FROM maven:3.3.3
-#FROM java:8
-WORKDIR /path/app
-ADD . /path/app/
-RUN mvn install
-RUN ls
-RUN java -version
-EXPOSE 80
-CMD ["java", "-jar", "target/gs-helloworld-1.0.jar"]
+FROM google/golang
+MAINTAINER Shaalx Shi "60026668.m@daocloud.io"
+
+# Build app
+WORKDIR /gopath/app
+ENV GOPATH /gopath/app
+ADD . /gopath/app/
+RUN go build -o gostdlib
+RUN chmod u+x /gopath/app/gostdlib
+RUN chmod u+x /gopath/app/run.sh
+EXPOSE 9000:9000 80:80
+CMD ["/gopath/app/run.sh"]
